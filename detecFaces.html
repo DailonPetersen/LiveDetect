@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
@@ -50,7 +50,7 @@
                 </div>
                 <div class="form-group">
                     <label for="groupId">Group ID</label>
-                    <input id="groupId" name="groupId" type="text" value="group_1" class="form-control">
+                    <input id="groupId" name="groupId" type="text" class="form-control">
                 </div>
                 <button id="btn" type="submit" onclick="createPerson()" class="btn btn-success">Criar Pessoa</button>
                 <!--    </form>-->
@@ -62,23 +62,23 @@
             </div>
             <div class="col-sm-6">
                 <form id="salva_imagens" method="POST" enctype="multipart/form-data">
+                    <label>Após criar a pessoa, escolha as imagens para treinar o sistema</label>
                     <div class="form-group">
                         <label>ID da pessoa</label>
                         <input id="personId" name="personId" type="text" class="form-control" placeholder="...">
                     </div>
                     <div class="form-group">
                         <label>ID do Groupo</label>
-                        <input id="groupId" name="groupId" type="text" class="form-control" placeholder="...">
+                        <input id="groupIdImage" name="groupIdImage" type="text" class="form-control" placeholder="...">
                     </div>
                     <div class="form-group">
-                        <label>Após criar a pessoa, escolha as imagens para treinar o sistema</label>
                         <div class="input-group">
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input" name="inputFiles" id="inputFiles" multiple>
                                 <label class="custom-file-label" for="inputFiles">Choose file</label>
                             </div>
                             <div class="input-group-append">
-                                <button class="btn btn-success" onclick="AddFaceToPersonGroup()" type="submit">Adicionar Imagens</button>
+                                <button class="btn btn-success" type="submit">Adicionar Imagens</button>
                             </div>
                         </div>
                     </div>
