@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <?php
-$conexao =  new PDO("mysql:host=localhost;dbname=faces", "dailon", "1234");
+$conexao =  new PDO("mysql:host=localhost:3306;dbname=livedetect", "root", "Jun@2020");
 
 if (isset($_POST["btnImages"])) {
     $personID = $_POST["personId"];
@@ -126,7 +126,7 @@ if (isset($_POST["btnImages"])) {
                     <label class="custom-file-label" for="inputToDetect">Imagem para detectar</label>
                 </div>
                 <div class="input-group-append">
-                    <button class="btn btn-success" id="btnImages" name="btnImages" onclick="Detect()">Detecta</button>
+                    <button class="btn btn-success" id="btnDetec" name="btnDetec" onclick="Detect()">Detecta</button>
                 </div>
             </div>
             <textarea id="detectResponse" class="form-control" aria-label="With textarea" style="height: 300px;">

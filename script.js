@@ -89,8 +89,8 @@ function createPerson(PersonName, PersonData, group_id) {
 }
 
 $('#salva_imagens').submit( e => {
-    e.preventDefault()
-    //AddFaceToPersonGroup(null, null, null, null)
+    //e.preventDefault()
+    AddFaceToPersonGroup(null, null, null, null)
 })
 //
 //function salvaImagem(formulario) {
