@@ -92,24 +92,7 @@ $('#salva_imagens').submit( e => {
     //e.preventDefault()
     AddFaceToPersonGroup(null, null, null, null)
 })
-//
-//function salvaImagem(formulario) {
-//
-//    $.ajax({
-//        type:'POST',
-//        data: formulario.serialize(),
-//        url:'salvar.php',
-//        async: true
-//    })
-//    .done(function (response) {
-//        console.log(response)
-//    })
-//    .fail(function (error) {
-//        console.error(error)
-//    });
-//
-//}
-//
+
 async function AddFaceToPersonGroup(file, personId, groupId) {
 
     personId = $('#personId').val()
@@ -140,12 +123,10 @@ async function AddFaceToPersonGroup(file, personId, groupId) {
             });        
     }
 }
-var faceID
+
 function Detect(file, params){
 
-    if (file == undefined) {
-        file = document.getElementById('inputToDetect').files[0]
-    }
+    file = document.getElementById('inputToDetect').files[0]
 
     var params = {
         "returnFaceId": "true",
@@ -155,7 +136,7 @@ function Detect(file, params){
             "age,emotion"
     }
 
-    $.ajax({
+    $.aax({
         url: apiUrl + "detect?" + $.param(params),
         type: 'POST',
         beforeSend: function(xhrObj){
@@ -168,19 +149,14 @@ function Detect(file, params){
         .done( (response) => {
             let data = JSON.stringify(response, null, 2)
             $("#detectResponse").text(data)
-            return response[0]["faceId"]
+            console.log(response[0]["faceId"]) 
         })
         .fail( (error) =>{
             $("#detectResponse").text(error)
         })
-
-
 }
 
 async function Identify(faceId, group_id){
-
-    var file = document.getElementById('img_Indentify').files[0]
-    faceId = Detect(file, null)
 
     console.log(faceId)
 
@@ -206,6 +182,7 @@ async function Identify(faceId, group_id){
     .done( response => {
         let data = JSON.stringify(response, null, 2)
         $("#indentifyResponse").text(data)
+        alert(response)
         console.log(response)
     })
     .fail( error =>{

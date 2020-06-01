@@ -1,5 +1,5 @@
 <?php 
-    $conexao =  new PDO("mysql:host=localhost;dbname=faces", "dailon", "1234");
+    $conexao =  new PDO("mysql:host=localhost;dbname=livedetect", "dailon", "1234");
 
     $query = $conexao->prepare("SELECT * FROM imagens ");
     $query->bindParam(1, $id);

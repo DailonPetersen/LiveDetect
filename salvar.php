@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 
 <?php
-$conexao =  new PDO("mysql:host=localhost:3306;dbname=livedetect", "root", "Jun@2020");
+$conexao =  new PDO("mysql:host=localhost:3306;dbname=livedetect", "dailon", "1234");
 
 if (isset($_POST["btnImages"])) {
+    $faceId = $_POST[""];
     $personID = $_POST["personId"];
     $name = $_FILES["inputFiles"]["name"];
     $type = $_FILES["inputFiles"]["type"];
@@ -11,11 +12,12 @@ if (isset($_POST["btnImages"])) {
 
     //header('Content-type:'.$type);
 
-    $query = $conexao->prepare("INSERT into imagens value('',?,?,?,?)");
-    $query->bindParam(1, $data);
-    $query->bindParam(2, $name);
+    $query = $conexao->prepare("INSERT into faces value(?,?,?,?,?)");
+    $query->bindParam(1, $faceId);
+    $query->bindParam(2, $data);
     $query->bindParam(3, $personID);
     $query->bindParam(4, $type);
+    $query->bindParam(5, $name);
     $query->execute();
 }
 
