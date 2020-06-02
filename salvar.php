@@ -80,19 +80,20 @@ if (isset($_POST["btnImages"])) {
         <div class="row" style="margin-top: 20px;">
             <div class="col-sm-6">
                 <div class="form-group">
-                    <h3>Identificar</h3>
-                    <input type="text" name="group_id" placeholder="grupo ID" id="group_id">
+                    <h3>Detecção</h3>
                     <div class="input-group">
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" name="img_Indentify" id="img_Indentify" multiple>
-                            <label class="custom-file-label" for="inputFiles">Imagem pra identificar</label>
+                            <input type="file" class="custom-file-input" name="inputToDetect" id="inputToDetect" multiple>
+                            <label class="custom-file-label" for="inputToDetect">Imagem para detectar</label>
+                        </div>
+                        <div class="input-group-append">
+                            <button class="btn btn-success" id="btnDetec" name="btnDetec" onclick="Detect()">Detecta</button>
                         </div>
                     </div>
-                    <button id="btnIndentify" class="btn btn-success" onclick="Identify()">Identificar</button>
-                </div>
-                <textarea id="indentifyResponse" class="form-control" aria-label="With textarea">
+                    <textarea id="detectResponse" class="form-control" aria-label="With textarea" style="height:200px;">
 
-                </textarea>
+                    </textarea>
+                </div>
             </div>
             <div class="col-sm-6">
                 <h4>Adicione as faces</h4>
@@ -120,45 +121,29 @@ if (isset($_POST["btnImages"])) {
                 </form>
             </div>
         </div>
-        <div class="row">
-            <h3>Detecção</h3>
-            <div class="input-group">
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" name="inputToDetect" id="inputToDetect" multiple>
-                    <label class="custom-file-label" for="inputToDetect">Imagem para detectar</label>
-                </div>
-                <div class="input-group-append">
-                    <button class="btn btn-success" id="btnDetec" name="btnDetec" onclick="Detect()">Detecta</button>
-                </div>
-            </div>
-            <textarea id="detectResponse" class="form-control" aria-label="With textarea" style="height: 300px;">
-
-            </textarea>
-        </div>
-    </div>
 
 
-    <hr>
+        <hr>
 
-    <div id="imagesSelected" class="container-fluid">
+        <div id="imagesSelected" class="container-fluid">
 
 
-        <?php
+            <?php
             $query = $conexao->prepare("SELECT * FROM imagens ");
             $query->bindParam(1, $id);
             $query->execute();
-            while ( $row = $query->fetch() ){
+            while ($row = $query->fetch()) {
                 //header('Content-type:'.$row['mime']);
-                echo "<li><a href='view.php?id=".$row['imagem']."'>".$row['nome']."</a></li>";
+                echo "<li><a href='view.php?id=" . $row['imagem'] . "'>" . $row['nome'] . "</a></li>";
             };
-        
-        ?>
 
-        <img id="img">
+            ?>
 
-    </div>
+            <img id="img">
 
-    <script src="script.js"></script>
+        </div>
+
+        <script src="script.js"></script>
 </body>
 
 </html>

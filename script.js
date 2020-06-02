@@ -136,7 +136,7 @@ function Detect(file, params){
             "age,emotion"
     }
 
-    $.aax({
+    $.ajax({
         url: apiUrl + "detect?" + $.param(params),
         type: 'POST',
         beforeSend: function(xhrObj){
@@ -149,7 +149,7 @@ function Detect(file, params){
         .done( (response) => {
             let data = JSON.stringify(response, null, 2)
             $("#detectResponse").text(data)
-            console.log(response[0]["faceId"]) 
+            Identify(response[0]["faceId"],null) 
         })
         .fail( (error) =>{
             $("#detectResponse").text(error)
@@ -160,11 +160,11 @@ async function Identify(faceId, group_id){
 
     console.log(faceId)
 
-    group_id = $('#group_id').val()
+    group_id = "group_1"
 
     var data = {
         "personGroupId": `${group_id}`,
-        "faceIds": `${faceId}`,
+        "faceIds": [`${faceId}`],
         "maxNumOfCandidatesReturned": 1,
         "confidenceThreshold": 0.5
     }
@@ -180,13 +180,38 @@ async function Identify(faceId, group_id){
         data: JSON.stringify(data),
     })
     .done( response => {
-        let data = JSON.stringify(response, null, 2)
-        $("#indentifyResponse").text(data)
-        alert(response)
-        console.log(response)
+        alert("Identificou!")
+        console.log(response[0]['candidates'][0]['personId'])
     })
     .fail( error =>{
         console.error(error)
     })
+    .then( response => {
+        GetPerson(response[0]['candidates'][0]['personId'], null)
+    })
 
 }
+
+async function GetPerson(faceId, group_id){
+
+    group_id = 'group_1'
+
+    await $.ajax({
+        url: apiUrl + `persongroups/${group_id}/persons/${faceId}`,
+        type: 'GET',
+        beforeSend: xhrObj => {
+            xhrObj.setRequestHeader('Ocp-Apim-Subscription-Key',apiKey)
+        }
+    })
+    .done( (response) => {
+        let nome = response['name']
+        alert('Este é o '+nome)
+    })
+    .fail( (error) =>{
+        console.error(error)
+    })
+}
+
+
+
+
