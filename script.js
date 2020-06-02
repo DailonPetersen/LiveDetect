@@ -126,7 +126,7 @@ async function AddFaceToPersonGroup(file, personId, groupId) {
 }
 
 function Detect(file, params){
-    if(!file) {
+    if(file == null) {
         file = document.getElementById('inputToDetect').files[0]
     }
 
@@ -237,15 +237,15 @@ function CaptureImage(){
     canvas.width = video.width
     canvas.height = video.videoHeight;
     canvas.getContext('2d').drawImage(video, 0, 0, video.videoWidth, video.videoHeight);  
-    canvas.toBlob() = (blob) => {
-      const img = new Image();
-      img.src = window.URL.createObjectUrl(blob);
-    };
+    //var data = canvas.toDataUrl('image/jpeg', 1.0)
+    canvas.toBlob( blob => {
+        Detect(blob, null)
+    }, 'image/jpeg', 0.95)
 }
 
 video.addEventListener('play', () => {
-    setInterval( async () => {
-        const detection = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions()
+        setInterval( async () => {
+            const detection = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions()
         console.log(detection)
     },10000)
 })
