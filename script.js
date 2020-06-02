@@ -2,7 +2,8 @@
 const img = document.getElementById('inputImage')
 const apiKey = "f4393d4b42804052aa3915ffb0026b24"
 const apiUrl = "https://dailonpetersenftec.cognitiveservices.azure.com/face/v1.0/"
-
+const video = document.getElementById('video') // from videolive.html
+const canvas = document.getElementById('canvas') // from videolive.html
 
 async function carrega() {
     await $.ajax({
@@ -125,8 +126,9 @@ async function AddFaceToPersonGroup(file, personId, groupId) {
 }
 
 function Detect(file, params){
-
-    file = document.getElementById('inputToDetect').files[0]
+    if(!file) {
+        file = document.getElementById('inputToDetect').files[0]
+    }
 
     var params = {
         "returnFaceId": "true",
@@ -211,6 +213,42 @@ async function GetPerson(faceId, group_id){
         console.error(error)
     })
 }
+
+// *********************** live video ********************* //
+
+Promise.all([
+    faceapi.nets.tinyFaceDetector.loadFromUri('./models'),
+    faceapi.nets.faceLandmark68Net.loadFromUri('./models'),
+    faceapi.nets.faceRecognitionNet.loadFromUri('./models'),
+    faceapi.nets.faceExpressionNet.loadFromUri('./models'),
+]).then(startVideo())
+
+
+async function startVideo() {
+    navigator.getUserMedia(
+        { video : {} },
+        stream => video.srcObject = stream,
+        error => console.error(error)
+    )
+    console.log('rodando')
+}
+
+function CaptureImage(){
+    canvas.width = video.width
+    canvas.height = video.videoHeight;
+    canvas.getContext('2d').drawImage(video, 0, 0, video.videoWidth, video.videoHeight);  
+    canvas.toBlob() = (blob) => {
+      const img = new Image();
+      img.src = window.URL.createObjectUrl(blob);
+    };
+}
+
+video.addEventListener('play', () => {
+    setInterval( async () => {
+        const detection = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions()
+        console.log(detection)
+    },10000)
+})
 
 
 
