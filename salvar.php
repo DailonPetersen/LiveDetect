@@ -31,16 +31,33 @@ if (isset($_POST["btnImages"])) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/areaadmin.css">
 </head>
 
 <body onload="carrega()" name="carrega">
 
-    <h1> Teste Detecção </h1>
+    <div class="container-fluid">
+        <nav class="nav navbar navbar-expand-lg navbar-dark bg-dark">
+            <h1 class="navbar-brand" style="font-size: 40px;">Teste Detecção</h1>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-item nav-link active" href="#"> Apresentação <span class="sr-only">(current)</span></a>
+                    <a class="nav-item nav-link" href="salvar.php">Área adminitrativa</a>
+                    <a class="nav-item nav-link" href="videolive.html">Área detecção</a>
+                    <a class="nav-item nav-link disabled" href="#">Disabled</a>
+                </div>
+            </div>
+            <span class="navbar-text">
+                Trabalho de conclusao do curso de ADS - FTEC
+            </span>
+        </nav>
+    </div>
 
-    <span> Trabalho de conclusao do curso de ADS - FTEC</span>
+
+
     <hr>
 
-    <div class="container-fluid">
+    <div class="container-fluid" id="coluna_principal">
         <div class="row">
             <div class="col-sm-6">
                 <!--<form method="post" action="script.js"> -->
