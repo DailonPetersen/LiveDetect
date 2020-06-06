@@ -236,7 +236,7 @@ async function startVideo() {
 function CaptureImage(){
     canvas.width = video.width
     canvas.height = video.videoHeight;
-    canvas.getContext('2d').drawImage(video, 0, 0, video.videoWidth, video.videoHeight);  
+    var file =  canvas.getContext('2d').drawImage(video, 0, 0, video.videoWidth, video.videoHeight);  
     //var data = canvas.toDataUrl('image/jpeg', 1.0)
     canvas.toBlob( blob => {
         Detect(blob, null)
@@ -244,10 +244,11 @@ function CaptureImage(){
 }
 
 video.addEventListener('play', () => {
-        setInterval( async () => {
-            const detection = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions()
-        console.log(detection)
-    },10000)
+    setInterval( async () => {
+        const detection = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions()
+        console.log(detection[0]["expressions"])
+        //CaptureImage();
+    },2000)
 })
 
 

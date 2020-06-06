@@ -1,0 +1,26 @@
+body{
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.container-fluid{
+    margin: 0;
+    padding: 30;
+    position: absolute;
+    width: 50vw;
+    height: 50vh; 
+    background: linear-gradient(0deg, rgba(0,38,194,1) 0%, rgba(56,117,255,0.8463760504201681) 100%); 
+}
+label{
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+}
+.msg{
+    color: wheat;
+    background-color: red;
+}
