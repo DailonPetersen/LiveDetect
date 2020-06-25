@@ -10,7 +10,7 @@ LOGGGOUUU PORRA
         header("location: login.php");
         exit;
     } else {
-        header("location: view.php");
+        header("location: index.php");
         exit;
     }    
 ?>
