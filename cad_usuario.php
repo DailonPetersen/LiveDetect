@@ -11,6 +11,7 @@ if (isset($_POST['salvar'])) //tanto pra novos cadastros quanto para edicoes
         $senha = addslashes($_POST['senha']);
         $confirmarSenha = addslashes($_POST['confirmarSenha']);
         $id_usuario = $_GET['id_update'];
+        
         if (!empty($email) && !empty($nomeDeUsuario) && !empty($senha) && !empty($confirmarSenha)) {
             if ($senha == $confirmarSenha) {                
                 if (!$usuario->updateById($nomeDeUsuario, $email, $senha, $id_usuario)) {
@@ -32,9 +33,10 @@ if (isset($_POST['salvar'])) //tanto pra novos cadastros quanto para edicoes
         $senha = addslashes($_POST['senha']);
         $confirmarSenha = addslashes($_POST['confirmarSenha']);
     
-        if (!empty($email) && !empty($nomeDeUsuario) && !empty($senha) && !empty($confirmarSenha)) {
+        if (!empty($email) && !empty($nomeDeusuario) && !empty($senha) && !empty($confirmarSenha)) {
+
             if ($senha == $confirmarSenha) {
-                if ($usuario->create($email, $nomeDeUsuario, $senha)) {
+                if ( $usuario->create($email, $nomeDeUsuario, $senha)) {
                     $msg = "Cadastrado com sucesso!";
                 } else {
                     $msg = "Nome de usuario já cadastrado!";
@@ -42,6 +44,7 @@ if (isset($_POST['salvar'])) //tanto pra novos cadastros quanto para edicoes
             } else {
                 $msg = "As senhas não estão iguais";
             }
+
         } else {
             $msg = "Preencha os campos!";
         }
@@ -109,7 +112,6 @@ if(isset($_GET['id_update'])){
                                     foreach($usuarios[$i] as $user => $valor){
                                         if ($user != 'id_usuario'){
                                             echo "<td class='hidden-phone'>$valor</td>";
-
                                         }
                                     } ?>
                                     <td>

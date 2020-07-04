@@ -5,28 +5,32 @@ require_once 'classes/Emocao.php';
 $conexao = new Conexao;
 $emocao = new Emocao;
 
-
 if ($conexao->connect()) {
     echo "Connect";
 } else {
     echo $conexao->msgErro;
 }
 
-    session_start();
+session_start();
 
-    if (isset($_SESSION['nomedeusuario'])){
-        $msg = $_SESSION['nomedeusuario'];
-    } else {
-        header("location: login.php");
-    }
+if (isset($_SESSION['nomedeusuario'])){
+    $msg = $_SESSION['nomedeusuario'];
+} else {
+    header("location: login.php");
+}
 
-    if ( isset($_POST['emocoes']) ){
+    $msg = '';
+    if ( isset($_POST['id_pessoa']) ){
 
         $emocoes = $_POST['emocoes'];
-        $faceId = $_POST['faceId'];
         $id_pessoa = $_POST['id_pessoa'];
-        if( !empty($emocoes) && !empty($faceId) && !empty($id_pessoa) ){
-            $emocao->insertEmocao($emocoes, $faceId, $id_pessoa);
+        
+        if( !empty($emocoes) && !empty($id_pessoa) ){
+            if ( $emocao->insertEmocao($emocoes, $id_pessoa) ) {
+                $msg = "Inseriu emocao";
+            } else {
+                $msg = "Erro!";
+            }
         }
 
     }
@@ -56,7 +60,12 @@ if ($conexao->connect()) {
     </style>
 </head>
 <body>
+            <?php
+            if (isset($msg)) {
+                echo $msg;
+            }
+            ?>
     <video id="video" width="720" height="480" autoplay muted></video>
-
+    <button id="detecta">Detecta</button>
 </body>
 </html>

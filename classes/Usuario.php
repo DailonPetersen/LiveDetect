@@ -24,7 +24,7 @@ Class Usuario {
         } else {
             $query = $pdo->prepare("INSERT INTO usuarios (nomedeusuario, senha, email) VALUES (:n, :s, :e)");
             $query->bindValue(":n", $nomedeusuario);
-            $query->bindValue(":s",$senha);
+            $query->bindValue(":s", $senha);
             $query->bindValue(":e", $email);
             $query->execute();
             return true;

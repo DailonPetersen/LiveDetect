@@ -25,39 +25,30 @@ video.addEventListener('play', () => {
     const displaySize = { width: video.width, height:video.height }
     faceapi.matchDimensions(canvas, displaySize)
 
-    
-    setInterval( async () => {
+    $("#detecta").click( async ( ) => {
 
         const detection = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions().withFaceDescriptors()
         const DeteccoesAjustadas = faceapi.resizeResults(detection, displaySize)
         console.log(detection[0]["expressions"])
 
-        canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
+        
+        
         canvas.getContext('2d').drawImage(video, 0, 0, video.videoWidth, video.videoHeight)
         faceapi.draw.drawDetections(canvas, DeteccoesAjustadas)
+        faceapi.draw.drawFaceLandmarks(canvas, DeteccoesAjustadas)
         faceapi.draw.drawFaceExpressions(canvas, DeteccoesAjustadas)
 
-        canvas.toBlob( Blob => {
-            Detect( Blob, null)
+        canvas.toBlob( blob => {
+            console.log(blob)
+            Detect( blob )
         }, 'image/jpeg', 0.95)
-
-    },1000)
+        canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
+    })
+    
 })
 
-//function CaptureImage(){
-//
-//    const canvas = document.getElementsByTagName('canvas')
-//    canvas.width = video.videoWidth
-//    canvas.height = video.videoHeight
-//    var file =  canvas.getContext('2d').drawImage(video, 0, 0, video.videoWidth, video.videoHeight) 
-//    //var data = canvas.toDataUrl('image/jpeg', 1.0)
-//    canvas.toBlob( blob => {
-//        Detect(blob, null)
-//    }, 'image/jpeg', 0.95)
-//}
 
-
-function Detect(file, params){
+function Detect(file){
     if(file == null) {
         file = document.getElementById('inputToDetect').files[0]
     }
@@ -103,7 +94,6 @@ async function Identify(faceId, group_id, emotions){
         "confidenceThreshold": 0.5
     }
 
-
     $.ajax({
         url: apiUrl + 'identify',
         type: 'POST',
@@ -113,6 +103,7 @@ async function Identify(faceId, group_id, emotions){
         },
         data: JSON.stringify(data),
     })
+
     .done( response => {
         alert("Identificou!")
         console.log(response[0]['candidates'][0]['personId'])
@@ -126,12 +117,12 @@ async function Identify(faceId, group_id, emotions){
 
 }
 
-async function GetPerson(faceId, group_id, emotions){
+async function GetPerson(personId, group_id, emotions){
 
     group_id = 'group_1'
 
     await $.ajax({
-        url: apiUrl + `persongroups/${group_id}/persons/${faceId}`,
+        url: apiUrl + `persongroups/${group_id}/persons/${personId}`,
         type: 'GET',
         beforeSend: xhrObj => {
             xhrObj.setRequestHeader('Ocp-Apim-Subscription-Key',apiKey)
@@ -141,20 +132,20 @@ async function GetPerson(faceId, group_id, emotions){
         let nome = response['name']
         let personId = response['personId']
         alert('Este é o '+nome)
-        salvaEmocaoDB(faceId, emotions, personId)
+        salvaEmocaoDB(emotions, personId)
     })
     .fail( (error) =>{
         console.error(error)
     })
 }
 
-function salvaEmocaoDB(faceId, emotions, personId){
+function salvaEmocaoDB(emotions, personId){
     
     const data = {
-        "faceId": faceId,
         "emocoes": emotions,
         "id_pessoa": personId
     }
+    console.log(data)
     console.log(JSON.stringify(data))
 
     $.ajax({

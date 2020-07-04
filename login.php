@@ -7,29 +7,26 @@ $usuario = new Usuario;
 ?>
 
 <?php
-    session_start();
+session_start();
 
-    if ( isset($_POST['inputUsuario']) ){
-        $username = $_POST['inputUsuario'];
-        $pass = $_POST['senha'];
+if (isset($_POST['inputUsuario'])) {
+    $username = $_POST['inputUsuario'];
+    $pass = $_POST['senha'];
 
-        if ( !empty($_POST['inputUsuario']) && !empty($_POST['senha']) ){
-            $conexao->connect();
-            if( $usuario->msgErro != "" ){
-                echo $usuario->msgErro;
-                $msg = $usuario->msgErro;
+    if (!empty($_POST['inputUsuario']) && !empty($_POST['senha'])) {
+        $conexao->connect();
+        if ($usuario->msgErro != "") {
+            $msg = $usuario->msgErro;
+            var_dump($usuario->msgErro);
+        } else {
+            if (!($usuario->loggin($username, $pass))) {
+                $msg = "Impossivel Logar!";
             } else {
-                if ( !($usuario->loggin($username, $pass)) ) {
-                    $msg = "Impossivel Logar!";
-                } else {
-                    header("location: zonarestrita.php");
-                }
-
+                header("location: zonarestrita.php");
             }
         }
-
-
     }
+}
 ?>
 <html lang="pt-br">
 
@@ -86,10 +83,10 @@ $usuario = new Usuario;
                         </div>
                     </div>
                 </div>
-                <!-- modal -->date-popover
+                <!-- modal -->
+                <span><?php echo @$msg; ?></span>
 
             </form>
-
         </div>
     </div>
 

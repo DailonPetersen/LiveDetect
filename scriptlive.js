@@ -20,10 +20,10 @@ video.addEventListener('play', () => {
 
     const canvas = faceapi.createCanvasFromMedia(video)
     document.body.append(canvas)
-    const displaySize = { width: video.width, height:video.height }
+    const displaySize = { width: video.width, height: video.height }
     faceapi.matchDimensions(canvas, displaySize)
 
-    setInterval( async () => {
+    $("#detecta").click( ( ) => {
 
         const detection = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions().withFaceDescriptors()
         const DeteccoesAjustadas = faceapi.resizeResults(detection, displaySize)
@@ -36,6 +36,6 @@ video.addEventListener('play', () => {
         faceapi.draw.drawDetections(canvas, DeteccoesAjustadas)
         faceapi.draw.drawFaceLandmarks(canvas, DeteccoesAjustadas)
         faceapi.draw.drawFaceExpressions(canvas, DeteccoesAjustadas)
-
-    },500)
+        
+    })
 })

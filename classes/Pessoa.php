@@ -26,8 +26,15 @@ Class Pessoa {
             $query->bindValue(":info",$info);
             $query->bindValue(":id_grupo", $id_grupo);
             $query->bindValue(":personid", $person_id);
-            $query->execute();
-            return true;
+            try {
+                $query->execute(); 
+                return true;
+            } catch (Exception $e){
+                $msgErro = $e;
+                return $msgErro;
+            }
+            
+
         }
     }
     
@@ -40,7 +47,6 @@ Class Pessoa {
         return $pessoas;
         
     }
-
 
     public function deleteByPersonId($person_id){
         global $pdo;

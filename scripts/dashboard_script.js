@@ -30,16 +30,19 @@ $('#pessoas').change( () => {
     var pessoa = $('#pessoas option:selected').text()
     var r = pessoa.split("- ")
     console.log(r[1])
+    
     $.ajax({
-        type:'POST',
+        type:'GET',
         url: 'dashboard.php',
         data: { 'personId':r[1]},
         async: true
     })
     .done(function (response) {
+        console.log(response)
         alert('OK')
     })
     .fail(function (error) {
         console.error(error)
     });
 })
+

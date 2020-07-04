@@ -5,16 +5,15 @@ require_once 'classes/Grupo.php';
 $dashboard = new Dashboard;
 $grupo = new Grupo;
 
-if(isset($_POST['personId'])){
-    $personId = $_POST['personId'];
+
+if(isset($_GET['personId'])){
+    $personId = $_GET['personId'];
     var_dump($personId);
     $result = $dashboard->getEmocoesPorPessoa($personId);
     echo $result;
 }
-
-
 ?>
-
+<!DOCTYPE HTML>
 <html lang="pt-br">
 
 <head>
@@ -23,6 +22,7 @@ if(isset($_POST['personId'])){
     <title>Document</title>
     <link href="assets/css/bootstrap.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    
 </head>
 
 <body>

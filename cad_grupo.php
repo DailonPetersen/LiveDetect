@@ -13,10 +13,8 @@ if (isset($_POST['form']) || isset($_POST['groupName']) ) //tanto pra novos cada
         if (!empty($infodogrupo) && !empty($nomedogrupo)) {
             if ( $grupo->updateById($id_grupo, $nomedogrupo, $infodogrupo) ){
                 $msg = "OK";
-                var_dump($msg, $nomedogrupo, $infodogrupo, $id_grupo);
             } else{
                 $msg = "NOK";
-                var_dump($msg);
             }
             
         } else {
@@ -27,14 +25,10 @@ if (isset($_POST['form']) || isset($_POST['groupName']) ) //tanto pra novos cada
         $infodogrupo = addslashes($_POST['groupData']);
         $id_grupo = addslashes($_POST['groupId']);
         if (!empty($infodogrupo) && !empty($nomedogrupo)) {
-            if ( $grupo->create($id_grupo, $nomedogrupo, $infodogrupo) ){
-                $msg = "OK";
-                var_dump($msg, $nomedogrupo, $infodogrupo, $id_grupo);
-            } else{
-                $msg = "NOK";
-                var_dump($msg);
+            if ( !$grupo->create($id_grupo, $nomedogrupo, $infodogrupo) ){
+                $msg = "GRUPO CRIADO COM SUCESSO";
+               // header("location: index.php?p=cad_grupo");
             }
-            
         } else {
             $msg = "Preencha os campos!";
         }
@@ -119,13 +113,13 @@ if(isset($_GET['update_id'])){
                 </div>
                 <br><button type="button" class="btn btn-success" name="salvar" onclick="NovoCadastro('div-cadastro')">Novo Grupo</button>
             </div>
-
         </div><!-- /content-panel -->
     </div><!-- /col-md-12 -->
 
     <div class="form-panel" style="display: block;" id="div-cadastro">
         <h4 class="mb"><i class="fa fa-angle-right"></i> Novo Grupo</h4>
-        <form class="form-horizontal style-form" method="POST" id="form-cadastro">
+        <!-- se fosse um form aqui, ele iria direto pro PHP acima, onde add no banco, contudo o controle esta no javascript -->
+        <div method="post" class="form-horizontal style-form" id="form-cadastro">
             <div class="form-group" id="nomegrupo">
                 <label class="col-sm-2 col-sm-2 control-label">Nome do Grupo</label>
                 <div class="col-sm-10">
@@ -134,8 +128,8 @@ if(isset($_GET['update_id'])){
             </div>
             <div class="form-group" id="id_grupo" style="display: block">
                 <label class="col-sm-2 col-sm-2 control-label">Id_grupo</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" value="<?php if(isset($dados)) { echo $dados['id_grupo'];} ?>" id="groupId" name="groupId">
+                <div class="col-sm-10" id="inputId">
+                    <input type="text" class="form-control" value="<?php if(isset($dados)) { echo 'O personID não pode ser alterado!'; }?>" id="groupId" name="groupId">
                 </div>
             </div>
             
@@ -152,8 +146,15 @@ if(isset($_GET['update_id'])){
 
             <input type="submit" class="btn btn-primary" name="salvar" id="salvar" onclick="salvarGrupo(this.value)" value="<?php if(isset($dados)){ echo "Atualizar"; } else { echo "Cadastrar"; }?>">
             <button type="button" class="btn btn-danger" onclick="CancelarCadastro('div-cadastro')">Cancelar</button>
-     </form>
+        </div>
     </div>
+            <?php
+        if (isset($msg)) {
+        ?>
+            <p class="msg" style="color: red;"><?php echo $msg ?></p>
+        <?php
+        }
+        ?>
     <script src="scripts/grupo_script.js"></script>
 </body>
 

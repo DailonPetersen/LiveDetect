@@ -240,6 +240,8 @@
                     case 'dashboard':
                         include_once 'dashboard.php';
                         break;
+                    case 'edit_pessoa':
+                        include_once 'edit_pessoa.php';
                 }
             
 

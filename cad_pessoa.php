@@ -17,10 +17,8 @@ if(isset($_POST['personId'])){
         if (!empty($nome) && !empty($info) && !empty($id_grupo) && !empty($person_id)) {
             if ( !$pessoa->create($nome, $info, $id_grupo, $person_id) ) {
                 $msg = "Pessoa cadastrada com sucesso!";
-                var_dump($msg);
             } else {
                 $msg = "Não foi";
-                var_dump($msg);
             }
         } else {
             $msg = "Preencha todos os campos!";
@@ -101,7 +99,7 @@ if(isset($_GET['edit_person_id'])){
                                         echo "<td class='hidden-phone'>$valor</td>";
                                     } ?>
                                     <td>
-                                        <a href="index.php?p=cad_pessoa&edit_person_id=<?php echo $pessoas[$i]['person_id']?>" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
+                                        <a href="index.php?p=edit_pessoa&edit_person_id=<?php echo $pessoas[$i]['person_id']?>&group_id=<?php echo $pessoas[$i]['id_grupo']?>" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
                                         <a href="index.php?p=cad_pessoa&delete_person_id=<?php echo $pessoas[$i]['person_id']?>" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></a>
                                     </td>
                                 <?php echo "<tr>"; 
@@ -156,14 +154,20 @@ if(isset($_GET['edit_person_id'])){
                 </div>
             </div>
 
+            <div class="form-group" style="display: none;" id="inputImagem">
+                <label class="col-sm-2 col-sm-2 control-label">Adicione uma imagem do rosto da pessoa</label>
+                <div class="col-sm-10">
+                    <input type="file" class="form-control" name="imagem" id="imagem">
+                </div>
+            </div>
+
             <div style="background-color: #000;">
 
             </div>
 
             <input type="submit" class="btn btn-primary" name='salvar' onclick="salvarPessoa(this.value)" value='<?php if(isset($dados)){ echo "Atualizar"; } else { echo "Cadastrar"; }?>'>
-            <button type="button" class="btn btn-danger" onclick="CancelarCadastro('div-cadastro')">Cancelar</button>
-    </div>
-    </form>
+            <button type="button" class="btn btn-danger" onclick="CancelarCadastro('div-cadastro')">Fechar</button>
+        </form>
     <hr>
         <?php
         if (isset($msg)) {

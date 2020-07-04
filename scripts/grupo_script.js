@@ -1,7 +1,9 @@
+const apiKey = "f4393d4b42804052aa3915ffb0026b24"
+const apiUrl = "https://dailonpetersenftec.cognitiveservices.azure.com/face/v1.0/"
+
 $('#groupName').change( e => {
     var final = $('#groupName').val()
     const group_id = generateRamdomString() +'_'+final
-    alert(group_id)
     criaInputHidden(group_id)
 
 })
@@ -10,20 +12,12 @@ const generateRamdomString = () =>{
     return Math.random().toString(36).substr(2, 6)
 }
 
-
 function criaInputHidden(final) {
     if ( $('#groupId').val() != '' ){
         alert('O ID DO GRUPO NAO SERÁ mudado')
     } else {
-        $('#id_grupo').html(
-            "<div class='form-group' id='id_grupo'style='display: block'>"+
-                "<label class='col-sm-2 col-sm-2 control-label'>Id do Grupo</label>" +
-                "<div class='col-sm-10'>"+
-                    `<input type='text' class='form-control' value='${final}'  id="groupId" name="groupId">`+
-                "</div>"+
-            "</div>")
+        $('#groupId').attr("value", final )
     }
-
 }
 
 function salvarGrupo(valorBotao) {
@@ -40,7 +34,6 @@ function salvarGrupo(valorBotao) {
         updateGroup(GroupName, GroupData, NameFinal)
     }
 
-    
 }
 
 function updateGroup(GroupName, GroupData, NameFinal) {
@@ -117,9 +110,8 @@ function createGroup(GroupName, GroupData, NameFinal) {
         alert(error)
         console.log(error)
     })
-
+    
     createGroupDB(GroupName, GroupData, NameFinal)
-
 }
 
 function createPerson(PersonName, PersonData, group_id) {

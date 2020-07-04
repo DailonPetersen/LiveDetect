@@ -5,13 +5,14 @@ const apiUrl = "https://dailonpetersenftec.cognitiveservices.azure.com/face/v1.0
 const video = document.getElementById('video') // from videolive.html
 const canvas = document.getElementById('canvas') // from videolive.html
 
-$('#salva_imagens').submit( e => {
+$('#form-imagem').submit( e => {
     //e.preventDefault()
-    AddFaceToPersonGroup(null, null, null, null)
+    AddFaceToPersonGroup(null, null, null)
 })
 
 async function AddFaceToPersonGroup(file, personId, groupId) {
 
+    
     personId = $('#personId').val()
     groupId = $('#groupIdImage').val()
 
