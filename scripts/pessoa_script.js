@@ -63,7 +63,6 @@ function createPessoaDB(nome, grupo, info, personId){
         "id_grupo": grupo,
         "personId": personId,
     }
-    alert(JSON.stringify(data))
 
     $.ajax({
         url:'cad_pessoa.php',
@@ -72,7 +71,7 @@ function createPessoaDB(nome, grupo, info, personId){
         async: true
     })
     .done( success => {
-        console.log('salvou')
+        window.location.href = `http://localhost/livedetect2/index.php?p=edit_pessoa&edit_person_id=${personId}&group_id=${grupo}`
     })
     .fail( error => {
         console.log('nao salvou')
@@ -98,7 +97,7 @@ function realizaUpload(file, personId){
         processData: false,
     })
     .done(function (response) {
-        alert("Foi carai")
+        alert("Upload Ok")
     })
     .fail(function (error) {
         console.error(error)
@@ -139,4 +138,5 @@ async function AddFaceToPerson() {
             console.error(error)
         });
     }
+    window.location.href = "http://localhost/livedetect2/index.php?p=cad_pessoa"
 }

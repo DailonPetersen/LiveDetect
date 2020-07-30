@@ -4,7 +4,7 @@ const apiUrl = "https://dailonpetersenftec.cognitiveservices.azure.com/face/v1.0
 $('#groupName').change( e => {
     var final = $('#groupName').val()
     const group_id = generateRamdomString() +'_'+final
-    criaInputHidden(group_id)
+    criaInputHidden(group_id.toLowerCase())
 
 })
 
@@ -31,7 +31,11 @@ function salvarGrupo(valorBotao) {
     if ( valorBotao == 'Cadastrar' ){
         createGroup(GroupName, GroupData, NameFinal)
     } else if ( valorBotao == 'Atualizar') {
-        updateGroup(GroupName, GroupData, NameFinal)
+        var url_string = window.location.href;
+        var url = new URL(url_string);
+        var group_id = url.searchParams.get('update_id');
+        console.log(GroupName, GroupData, group_id)
+        updateGroup(GroupName, GroupData, group_id)
     }
 
 }
@@ -53,14 +57,12 @@ function updateGroup(GroupName, GroupData, NameFinal) {
         data: JSON.stringify(data),
     })
     .done( success => {
-        alert('Foi')
+        createGroupDB(GroupName, GroupData, NameFinal)
     })
     .fail( error => {
         alert(error)
         console.log(error)
     })
-
-    createGroupDB(GroupName, GroupData, NameFinal)
 
 }
 
@@ -71,15 +73,17 @@ function createGroupDB(GroupName, GroupData, NameFinal){
         "groupData": GroupData,
         "groupId": NameFinal,
     }
+    console.log(JSON.stringify(data));
 
     $.ajax({
         url:'cad_grupo.php',
         type: 'POST',
         data: data,
-        async: true
+        async: false
     })
     .done( success => {
-        console.log('salvou')
+        console.log('Sucesso!')
+        window.location.href = "http://localhost/livedetect2/index.php?p=cad_grupo"
     })
     .fail( error => {
         console.log('nao salvou')
@@ -104,7 +108,7 @@ function createGroup(GroupName, GroupData, NameFinal) {
         data: JSON.stringify(data),
     })
     .done( success => {
-        alert('Foi')
+        alert('Grupo cadastrado com sucesso!')
     })
     .fail( error => {
         alert(error)
@@ -114,35 +118,62 @@ function createGroup(GroupName, GroupData, NameFinal) {
     createGroupDB(GroupName, GroupData, NameFinal)
 }
 
-function createPerson(PersonName, PersonData, group_id) {
+function deleta(group_id){
 
-    group_id = $('#groupId').val()
-    PersonName = $('#personName').val()
-    PersonData = $('#personData').val()
+    alert(group_id)
+    console.log(group_id);
+    //$.ajax({
+    //    url: apiUrl + `persongroups/${group_id}`,
+    //    type: 'DELETE',
+    //    beforeSend: xhrObj =>{
+    //        xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key",apiKey)
+    //    }
+    //})
+    //.done( success => {
+    //    alert('Grupo Deletado com sucesso!')
+    //    deletaDB(group_id)
+    //    window.location.href = "http://localhost/livedetect2/index.php?p=cad_grupo"
+    //})
+    //.fail( error => {
+    //    alert(error)
+    //    console.log(error)
+    //})
+}
 
-    var data = {
-        "name" : `${PersonName}`,
-        "userData": `${PersonData}`
+function deletaDB(group_id){
+    
+    const data = {
+        "groupId": group_id,
     }
 
     $.ajax({
-        url: apiUrl + `persongroups/${group_id}/persons`,
-        type: "POST",
-        beforeSend(xhr){
-            xhr.setRequestHeader("Content-Type","application/json")
-            xhr.setRequestHeader("Ocp-Apim-Subscription-Key", apiKey)
-        },
-        data: JSON.stringify(data)
+        url:'cad_grupo.php',
+        type: 'GET',
+        data: data,
+        async: true
     })
-    .done(function (response) {
-        alert("Pessoa criada com sucesso! ID: "+response["personId"])
-        
-        document.getElementById('personId').value = (response["personId"])
+    .done( success => {
+        console.log('Grupo Deletado com sucesso!')
     })
-    .fail(function (error) {
-        console.error(error)
-    });
-
-    $('#groupIdImage').val(group_id)
-
+    .fail( error => {
+        console.log('nao salvou')
+    })
 }
+
+function treinarGrupo(group_id){
+    $.ajax({
+        url: apiUrl + `persongroups/${group_id}/train`,
+        type: 'POST',
+        beforeSend: xhrObj =>{
+            xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key",apiKey)
+        }
+    })
+    .done( success => {
+        alert('Grupo Treinado com sucesso!')
+    })
+    .fail( error => {
+        alert(error)
+        console.log(error)
+    })
+}
+

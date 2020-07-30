@@ -18,7 +18,7 @@ if(isset($_POST['personId'])){
             if ( !$pessoa->create($nome, $info, $id_grupo, $person_id) ) {
                 $msg = "Pessoa cadastrada com sucesso!";
             } else {
-                $msg = "Não foi";
+                $msg = "Inconformidade no banco de dados.";
             }
         } else {
             $msg = "Preencha todos os campos!";
@@ -134,6 +134,7 @@ if(isset($_GET['edit_person_id'])){
                 <label class="col-sm-2 col-sm-2 control-label">Grupo</label>
                 <div class="col-sm-10">
                     <select class="form-control" name="id_grupo" id="id_grupo">
+                        <option>-- Selecionar --</option>
                 <?php if(!isset($dados)){  
                         $grupos = $grupo->getGroups();
                         if ( count($grupos) > 0) {

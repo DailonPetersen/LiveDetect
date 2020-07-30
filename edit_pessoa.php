@@ -11,9 +11,9 @@ if (isset($_GET['edit_person_id'])) {
 }
 
 if (@$_POST['enviar']) {
-
     //funcao vem do funcoes_upload.php
     publicarArquivo($_FILES['inputImagem'], $_POST['personId']);
+
 }   
 
 
@@ -23,7 +23,7 @@ if (@$_POST['enviar']) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Usuários</title>
+    <title>Edicao da pessoa</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
 </head>
 
@@ -48,6 +48,7 @@ if (@$_POST['enviar']) {
 <body>
     <div class="form-panel" style="display: block;" id="div-cadastro">
         <h4 class="mb"><i class="fa fa-angle-right"></i> Editar Pessoa</h4>
+        <h5>Para concluir o cadastro, adicione pelo menos duas fotos desta pessoa.</h5>
         <form class="form-horizontal style-form" method="post" id="form-cadastro">
             <div class="form-group">
                 <label class="col-sm-2 col-sm-2 control-label">Nome</label>

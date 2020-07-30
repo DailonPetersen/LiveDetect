@@ -5,19 +5,19 @@ $usuario = new Usuario;
 if (isset($_POST['salvar'])) //tanto pra novos cadastros quanto para edicoes
 {
     // ------------------------EDITAR---------------------------------------
-    if (isset($_GET['id_update']) && !empty(isset($_GET['id_update']))){
+    if (isset($_GET['id_update']) && !empty(isset($_GET['id_update']))) {
         $email = addslashes($_POST['email']);
         $nomeDeUsuario = addslashes($_POST['usuario']);
         $senha = addslashes($_POST['senha']);
         $confirmarSenha = addslashes($_POST['confirmarSenha']);
         $id_usuario = $_GET['id_update'];
-        
+
         if (!empty($email) && !empty($nomeDeUsuario) && !empty($senha) && !empty($confirmarSenha)) {
-            if ($senha == $confirmarSenha) {                
+            if ($senha == $confirmarSenha) {
                 if (!$usuario->updateById($nomeDeUsuario, $email, $senha, $id_usuario)) {
                     $msg = "Atualizado com sucesso!";
                 } else {
-                    $msg = "Não foi";
+                    $msg = "Inconformidade no banco de dados.";
                 }
             } else {
                 $msg = "As senhas não estão iguais";
@@ -32,11 +32,9 @@ if (isset($_POST['salvar'])) //tanto pra novos cadastros quanto para edicoes
         $nomeDeUsuario = addslashes($_POST['usuario']);
         $senha = addslashes($_POST['senha']);
         $confirmarSenha = addslashes($_POST['confirmarSenha']);
-    
-        if (!empty($email) && !empty($nomeDeusuario) && !empty($senha) && !empty($confirmarSenha)) {
-
+        if (!empty($email) && !empty($nomeDeUsuario) && !empty($senha) && !empty($confirmarSenha)) {
             if ($senha == $confirmarSenha) {
-                if ( $usuario->create($email, $nomeDeUsuario, $senha)) {
+                if ($usuario->create($email, $nomeDeUsuario, $senha)) {
                     $msg = "Cadastrado com sucesso!";
                 } else {
                     $msg = "Nome de usuario já cadastrado!";
@@ -44,19 +42,18 @@ if (isset($_POST['salvar'])) //tanto pra novos cadastros quanto para edicoes
             } else {
                 $msg = "As senhas não estão iguais";
             }
-
         } else {
-            $msg = "Preencha os campos!";
+            $msg = "Preencha todos os campos!";
         }
-    } 
+    }
 }
 
-if(isset($_GET['username'])){
-    $nomedeusuario = addslashes($_GET['username']); 
+if (isset($_GET['username'])) {
+    $nomedeusuario = addslashes($_GET['username']);
     $usuario->deleteByName($nomedeusuario);
 }
 
-if(isset($_GET['id_update'])){
+if (isset($_GET['id_update'])) {
     $id_update = addslashes($_GET['id_update']);
     $dados = $usuario->selectById($id_update);
 }
@@ -80,12 +77,8 @@ if(isset($_GET['id_update'])){
         }
     }
 
-    function CancelarCadastro(el) {
-        var display = document.getElementById(el).style.display;
-        if (display == "block") {
-            document.getElementById(el).style.display = 'none';
-            document.getElementById('form-cadastro').reset();
-        }
+    function CancelarEdicao(){
+        location.href="index.php?p=cad_usuario";
     }
 </script>
 
@@ -106,19 +99,19 @@ if(isset($_GET['id_update'])){
                         <tbody>
                             <?php
                             $usuarios = $usuario->getUsers();
-                            if( count($usuarios) > 0){
-                                for($i = 0; $i < count($usuarios); $i++){
+                            if (count($usuarios) > 0) {
+                                for ($i = 0; $i < count($usuarios); $i++) {
                                     echo "<tr>";
-                                    foreach($usuarios[$i] as $user => $valor){
-                                        if ($user != 'id_usuario'){
+                                    foreach ($usuarios[$i] as $user => $valor) {
+                                        if ($user != 'id_usuario') {
                                             echo "<td class='hidden-phone'>$valor</td>";
                                         }
                                     } ?>
                                     <td>
-                                        <a href="index.php?p=cad_usuario&id_update=<?php echo $usuarios[$i]['id_usuario']?>" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
-                                        <a href="index.php?p=cad_usuario&username=<?php echo $usuarios[$i]['nomedeusuario']?>" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></a>
+                                        <a href="index.php?p=cad_usuario&id_update=<?php echo $usuarios[$i]['id_usuario'] ?>" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
+                                        <a href="index.php?p=cad_usuario&username=<?php echo $usuarios[$i]['nomedeusuario'] ?>" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></a>
                                     </td>
-                                <?php echo "<tr>"; 
+                            <?php echo "<tr>";
                                 }
                             }
                             ?>
@@ -136,13 +129,17 @@ if(isset($_GET['id_update'])){
             <div class="form-group">
                 <label class="col-sm-2 col-sm-2 control-label">E-mail</label>
                 <div class="col-sm-10">
-                    <input type="text" id="email" name="email" class="form-control" value="<?php if(isset($dados)) { echo $dados['email'];} ?>" placeholder="email...">
+                    <input type="text" id="email" name="email" class="form-control" value="<?php if (isset($dados)) {
+                                                                                                echo $dados['email'];
+                                                                                            } ?>" placeholder="email...">
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-2 col-sm-2 control-label">Usuário</label>
                 <div class="col-sm-10">
-                    <input type="text" id="usuario" name="usuario" class="form-control" value="<?php if(isset($dados)) { echo $dados['nomedeusuario'];} ?>" placeholder="usuario...">
+                    <input type="text" id="usuario" name="usuario" class="form-control" value="<?php if (isset($dados)) {
+                                                                                                    echo $dados['nomedeusuario'];
+                                                                                                } ?>" placeholder="usuario...">
                 </div>
             </div>
             <div class="form-group">
@@ -158,8 +155,12 @@ if(isset($_GET['id_update'])){
                 </div>
             </div>
 
-            <input type="submit" class="btn btn-primary" name="salvar" value="<?php if(isset($dados)){ echo "Atualizar"; } else { echo "Cadastrar"; }?>">
-            <input type="submit" class="btn btn-danger" id="cancelar" name="cancelar" value="Cancelar">
+            <input type="submit" class="btn btn-primary" name="salvar" value="<?php if (isset($dados)) {
+                                                                                    echo "Atualizar";
+                                                                                } else {
+                                                                                    echo "Cadastrar";
+                                                                                } ?>">
+            <input type="button" class="btn btn-danger" id="cancelar" name="cancelar" value="Cancelar" onclick="CancelarEdicao()">
         </form>
         <hr>
         <?php

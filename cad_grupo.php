@@ -4,26 +4,31 @@ require_once 'classes/Grupo.php';
 $grupo = new Grupo;
 
 
-if (isset($_POST['form']) || isset($_POST['groupName']) ) //tanto pra novos cadastros quanto para edicoes
+if (isset($_POST['groupName']) ) //tanto pra novos cadastros quanto para edicoes
 {
-    if ( isset($_GET['update_id']) && !empty(isset($_GET['update_id'])) ){
+    if ( isset($_GET['update_id']) && !empty($_GET['update_id']) ){
         $nomedogrupo = addslashes($_POST['groupName']);
         $infodogrupo = addslashes($_POST['groupData']);
-        $id_grupo = addslashes($_POST['groupId']);
+        $id_grupo = $_POST['groupId'];
+
         if (!empty($infodogrupo) && !empty($nomedogrupo)) {
-            if ( $grupo->updateById($id_grupo, $nomedogrupo, $infodogrupo) ){
-                $msg = "OK";
+            
+            if ($msg = $grupo->updateById($id_grupo, $nomedogrupo, $infodogrupo) ){
+                var_dump($id_grupo, $infodogrupo, $nomedogrupo);
+                var_dump($msg);
             } else{
-                $msg = "NOK";
+                var_dump($msg);
             }
             
         } else {
             $msg = "Preencha os campos!";
         }
+
     } else {
         $nomedogrupo = addslashes($_POST['groupName']);
         $infodogrupo = addslashes($_POST['groupData']);
         $id_grupo = addslashes($_POST['groupId']);
+        var_dump($id_grupo, $infodogrupo, $nomedogrupo);
         if (!empty($infodogrupo) && !empty($nomedogrupo)) {
             if ( !$grupo->create($id_grupo, $nomedogrupo, $infodogrupo) ){
                 $msg = "GRUPO CRIADO COM SUCESSO";
@@ -37,7 +42,8 @@ if (isset($_POST['form']) || isset($_POST['groupName']) ) //tanto pra novos cada
 
 
 if(isset($_GET['delete_id'])){
-    $id_grupo = addslashes($_GET['delete_id']); 
+    $id_grupo = addslashes($_GET['delete_id']);
+?><script>deleta(<?php echo $id_grupo ?>)</script><?php
     $grupo->deleteById($id_grupo);
 }
 
@@ -103,6 +109,7 @@ if(isset($_GET['update_id'])){
                                     <td>
                                         <a href="index.php?p=cad_grupo&update_id=<?php echo $grupos[$i]['id_grupo'] ?>" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
                                         <a href="index.php?p=cad_grupo&delete_id=<?php echo $grupos[$i]['id_grupo'] ?>" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></a>
+                                        <button type="button" class="btn btn-success btn-xs" onclick="treinarGrupo('<?php echo $grupos[$i]['id_grupo'] ?>')">Treinar</button>
                                     </td>
                             <?php echo "<tr>";
                                 }

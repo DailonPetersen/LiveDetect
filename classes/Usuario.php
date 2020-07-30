@@ -1,5 +1,5 @@
 <?php
-require_once 'classes/Conexao.php';
+@include 'classes/Conexao.php';
 $conexao = new Conexao;
 
 
@@ -16,19 +16,18 @@ Class Usuario {
     public function create($email, $nomedeusuario, $senha){
 
         global $pdo;
-        $query = $pdo->prepare("SELECT id_usuario FROM usuarios WHERE nomedeusuario = :username");
-        $query->bindValue(":username", $nomedeusuario);
-        $query->execute();
-        if($query->rowCount() > 0){
-            return false;
-        } else {
+
             $query = $pdo->prepare("INSERT INTO usuarios (nomedeusuario, senha, email) VALUES (:n, :s, :e)");
             $query->bindValue(":n", $nomedeusuario);
             $query->bindValue(":s", $senha);
             $query->bindValue(":e", $email);
-            $query->execute();
-            return true;
-        }
+            try {
+                $query->execute(); 
+                return true;
+            } catch (Exception $e){
+                $msgErro = $e;
+                return $msgErro;
+            }
     }
     
     public function loggin($nomedeusuario, $senha){
@@ -82,5 +81,3 @@ Class Usuario {
         $erro = $query->errorInfo();
     }
 }
-
-?>

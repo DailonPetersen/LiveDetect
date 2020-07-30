@@ -1,65 +1,86 @@
 <?php
-
-require_once 'classes/Dashboard.php';
+require_once 'classes/Conexao.php';
 require_once 'classes/Grupo.php';
-$dashboard = new Dashboard;
+require_once 'classes/Pessoa.php';
+
+$conexao = new Conexao;
 $grupo = new Grupo;
+$pessoa = new Pessoa;
 
-
-if(isset($_GET['personId'])){
-    $personId = $_GET['personId'];
-    var_dump($personId);
-    $result = $dashboard->getEmocoesPorPessoa($personId);
-    echo $result;
+if ($conexao->connect()) {
+  echo "Connect";
+} else {
+  echo $conexao->msgErro;
 }
-?>
-<!DOCTYPE HTML>
-<html lang="pt-br">
 
+?>
+
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link href="assets/css/bootstrap.css" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-    
 </head>
 
 <body>
 
-    <div class="container">
-        <select name="grupos" id="grupos">
+  <div class="row mt">
+    <div class="col-lg-12">
+      <div class="form-panel">
+        <h4 class="mb"><i class="fa fa-angle-right"></i> Dashboard - Selecione os dados a serem exibidos conforme os filtros abaixo</h4>
+
+        <label>Pessoa</label>
+        <form method="get" action="classes/gera_dashboard.php">
+          <select class="form-control" name="pessoa_select">
+            <option>-- Selecionar --</option>
             <?php
-                $grupos = $grupo->getGroups();
-                if ( count($grupos) > 0) {
-                    for( $i = 0; $i < count($grupos); $i++){ ?>
-                        <option value=><?php echo $grupos[$i]['id_grupo']?></option>
-                <?php }
-                }
+            $pessoas = $pessoa->getPessoas();
+            if (count($pessoas) > 0) {
+              for ($i = 0; $i < count($pessoas); $i++) { ?>
+                <option><?php echo $pessoas[$i]['nome'] ?></option>
+            <?php       }
+            }
             ?>
-        </select>
-        <select name="pessoas" id="pessoas" form="seleciona_grupo">
-
-        </select>
-
+          </select>
+          <br>
+          <label>Período</label>
+          <br>
+          <label>De: </label> <input name="data_ini" type="datetime-local"> <label>A: </label> <input name="data_fim" type="datetime-local">
+          <div style="padding: 20pt;">
+            <input type="submit" class="btn btn-primary" value="Exibir">
+          </div>
+        </form>
+      </div>
     </div>
 
-    <div class="tab-pane" id="chartjs">
-        <div class="row mt">
-            <div class="col-lg-6">
-                <div class="content-panel">
-                    <h4><i class="fa fa-angle-right"></i> Radar</h4>
-                    <div class="panel-body text-center">
-                        <canvas id="radar" height="300" width="400"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<!--
+    <div class="row mt">
+    <div class="col-lg-12">
+      <div class="form-panel">
+        <h4 class="mb"><i class="fa fa-angle-right"></i> Dashboard - Selecione os dados a serem exibidos conforme os filtros abaixo</h4>
 
-    <script defer src="scripts/dashboard_script.js"></script>
-    <script src="assets/js/chart-master/Chart.js"></script>
-    <script src="assets/js/chartjs-conf.js"></script>
+        <label>Grupos</label>
+        <form method="get" action="classes/gera_dashboard_group.php">
+          <select class="form-control" name="grupo_select">
+            <option>-- Selecionar --</option>
+            <?php
+            $grupos = $grupo->getGroups();
+            if (count($grupos) > 0) {
+              for ($i = 0; $i < count($grupos); $i++) { ?>
+                <option><?php echo $grupos[$i]['nome_grupo'] ?></option>
+            <?php       }
+            }
+            ?>
+          </select>
+          <br>
+          <label>Período</label>
+          <br>
+          <label>De: </label> <input name="data_ini" type="datetime-local"> <label>A: </label> <input name="data_fim" type="datetime-local">
+          <div style="padding: 20pt;">
+            <input type="submit" class="btn btn-primary" value="Exibir">
+          </div>
+        </form>
+      </div>
+    </div>
+    </div> -->
 </body>
 
 </html>
+
